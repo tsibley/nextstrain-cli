@@ -1,0 +1,34 @@
+# Only image with Docker CE installed
+image: Visual Studio 2017
+
+environment:
+  # Output streams should be UTF-8 not CP1252
+  PYTHONIOENCODING: utf-8
+
+  # The different Python versions to test
+  matrix:
+    - PATH: C:\Python35-x64;C:\Python35-x64\Scripts;%PATH%
+    - PATH: C:\Python36-x64;C:\Python36-x64\Scripts;%PATH%
+    - PATH: C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
+
+install:
+  - docker-switch-linux
+  - pip install .
+
+before_test:
+  - git clone --depth 1 https://github.com/nextstrain/zika
+  - mkdir zika\data
+  - copy zika\example_data\zika.fasta zika\data\
+
+test_script:
+  - nextstrain version
+  - nextstrain check-setup
+  - nextstrain update
+  - nextstrain build zika
+
+
+# Don't build anything with Visual Studio.  We just want testing on Windows.
+build: off
+
+# Label jobs more sensibly than the default since we're not building software.
+version: "{branch}-{build}"
