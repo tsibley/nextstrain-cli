@@ -35,13 +35,16 @@ jobs:
           mamba install augur snakemake
           git clone https://github.com/nextstrain/zika-tutorial
 
-      - name: Install Nextstrain CLI
+      - name: Check python version
         run: |
           # Assert that we're on the expected Python version, in case the GH
           # Actions environment is messed up.
           python --version | grep -F 'Python ${{ matrix.python }}.'
-          pip install --upgrade -e '.[dev]'
+      - name: Install Nextstrain CLI
+        run: pip install --upgrade -e '.[dev]'
 
+      - name: Run Nextstrain CLI commands
+        run: |
           nextstrain version --verbose
           nextstrain check-setup --set-default
 
