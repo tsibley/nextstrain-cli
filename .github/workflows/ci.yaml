@@ -35,7 +35,7 @@ jobs:
 
       - name: Set up test environment
         run: |
-          mamba install augur snakemake
+          mamba install augur auspice snakemake
           git clone https://github.com/nextstrain/zika-tutorial
 
       - name: Install Nextstrain CLI
