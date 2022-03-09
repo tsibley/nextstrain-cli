@@ -40,7 +40,7 @@ jobs:
           # Assert that we're on the expected Python version, in case the GH
           # Actions environment is messed up.
           python --version | grep -F 'Python ${{ matrix.python }}.'
-          python -m pip install --upgrade '.[dev]'
+          pip install --upgrade -e '.[dev]'
 
           nextstrain version --verbose
           nextstrain check-setup --set-default
