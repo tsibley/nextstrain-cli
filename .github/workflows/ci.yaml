@@ -134,6 +134,9 @@ jobs:
       - test-source
       - test-dist
       - doc
+    permissions:
+      metadata: read
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -154,6 +157,3 @@ jobs:
           TWINE_REPOSITORY_URL: https://test.pypi.org/legacy/
 
       - run: ./devel/create-github-release "${{github.ref_name}}" dist/*
-        permissions:
-          metadata: read
-          contents: write
