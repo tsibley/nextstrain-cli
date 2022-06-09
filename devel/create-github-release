@@ -1,0 +1,35 @@
+#!/bin/bash
+set -euo pipefail
+
+devel="$(dirname "$0")"
+
+main() {
+    local version="${1:?version is required}"
+    shift
+    local -a assets=("$@")
+
+    if [[ ${#assets[@]} -eq 0 ]]; then
+        echo "ERROR: no assets provided" >&2
+        exit 1
+    fi
+
+    gh release create \
+        "$version" \
+        --repo "${GITHUB_REPOSITORY:-nextstrain/cli}" \
+        --title "$version" \
+        --target "$(git rev-parse --verify "$version^{tag}")" \
+        --notes-file <(preamble; "$devel"/changes "$version") \
+        "${assets[@]}"
+}
+
+preamble() {
+    cat <<~~
+
+_These release notes are automatically extracted from the full [changelog][]._
+
+[changelog]: https://github.com/nextstrain/cli/blob/master/CHANGES.md#readme
+
+~~
+}
+
+main "$@"
