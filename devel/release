@@ -57,7 +57,10 @@ assert-changelog-has-additions() {
 }
 
 assert-changelog-has-changes-for-next() {
-    [[ -n "$("$devel"/changes)" ]]
+    if [[ -z "$("$devel"/changes __NEXT__)" ]]; then
+        echo "It doesn't look like $(basename "$changes_file") has entries for __NEXT__." >&2
+        exit 1
+    fi
 }
 
 next-version() {
