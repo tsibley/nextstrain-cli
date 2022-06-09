@@ -1,0 +1,11 @@
+#!/bin/bash
+# Extract changelog for a specified version (or __NEXT__ if no version
+# specified).
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+version="${1:-__NEXT__}"
+export version
+
+perl -ne 'print if /^# \Q$ENV{version}\E( |$)/ ... (/^# / and exit)' CHANGES.md | tail -n +2
