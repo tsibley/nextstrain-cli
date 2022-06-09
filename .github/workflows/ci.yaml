@@ -15,6 +15,7 @@ on:
 
 jobs:
   test-source:
+    if: false
     name: test-source (python=${{ matrix.python }} os=${{ matrix.os }})
     strategy:
       fail-fast: false
@@ -181,6 +182,7 @@ jobs:
       - run: ./build/${{ matrix.target }}/release/installation/${{ matrix.exe }} --help
 
   test-dist:
+    if: false
     needs: build-dist
     name: test-dist (python=${{ matrix.python }} os=${{ matrix.os }})
     strategy:
@@ -281,6 +283,7 @@ jobs:
       - uses: ./src/.github/actions/run-integration-tests
 
   doc:
+    if: false
     name: doc
     runs-on: ubuntu-latest
     steps:
@@ -308,10 +311,6 @@ jobs:
     needs:
       - build-dist
       - build-standalone
-      - test-source
-      - test-dist
-      - test-standalone
-      - doc
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -336,12 +335,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: standalone-x86_64-pc-windows-msvc
-
-      - run: twine upload dist/*
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-          TWINE_REPOSITORY_URL: https://upload.pypi.org/legacy/
 
       - run: ./devel/create-github-release "${{github.ref_name}}" dist/* nextstrain-cli-*-standalone-*
         env:
