@@ -8,4 +8,4 @@ cd "$(dirname "$0")/.."
 version="${1:-__NEXT__}"
 export version
 
-perl -ne 'print if /^# \Q$ENV{version} / ... (/^# / and exit)' CHANGES.md | tail -n +2
+perl -ne 'print if /^# \Q$ENV{version}\E( |$)/ ... (/^# / and exit)' CHANGES.md | tail -n +2
