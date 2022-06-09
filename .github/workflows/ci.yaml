@@ -131,9 +131,6 @@ jobs:
       && github.ref_type == 'tag'
     needs:
       - build-dist
-      - test-source
-      - test-dist
-      - doc
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -148,11 +145,5 @@ jobs:
         with:
           name: dist
           path: dist/
-
-      - run: twine upload dist/*
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-          TWINE_REPOSITORY_URL: https://upload.pypi.org/legacy/
 
       - run: ./devel/create-github-release "${{github.ref_name}}" dist/*
