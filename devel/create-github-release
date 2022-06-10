@@ -27,6 +27,7 @@ main() {
     # Translate from tag into commit for `gh release create --target`.
     commit="$(git rev-parse --verify "$version^{commit}")"
 
+    # XXX TODO: Parse $version to figure out when to pass --prerelease.
     gh release create \
         "$version" \
         --repo "${GITHUB_REPOSITORY:-nextstrain/cli}" \
