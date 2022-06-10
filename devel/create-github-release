@@ -17,7 +17,7 @@ main() {
         "$version" \
         --repo "${GITHUB_REPOSITORY:-nextstrain/cli}" \
         --title "$version" \
-        --target "$(git rev-parse --verify "$version^{tag}")" \
+        --target "$(git rev-parse --verify "$version^{commit}")" \
         --notes-file <(preamble; "$devel"/changes "$version") \
         "${assets[@]}"
 }
